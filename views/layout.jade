@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='csrf-token', content=_csrf)
+    title #{title} - the forum
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    link(href="https://bootswatch.com/superhero/bootstrap.min.css", rel="stylesheet")
+    link(rel='stylesheet', href='/WH/styles/style.css')
+  body
+    include partials/header
+
+    .container(style="margin-top: 65px;margin-bottom: 65px;")
+      include partials/flash
+      block content
+
+    include partials/footer
+
+    != js('application')
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")

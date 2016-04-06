@@ -1,0 +1,38 @@
+doctype html
+html(ng-app='procom')
+  head
+    title #{title}
+
+    base(href='/')
+
+    link(href="https://bootswatch.com/superhero/bootstrap.min.css", rel="stylesheet")
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    link(href="https://fonts.googleapis.com/icon?family=Material+Icons" ,rel="stylesheet")
+
+  body
+    div(ng-controller="BodyCtrl" ng-include="'/WH/views/partials/header.html'")
+    #wrapper(style="margin-top: 65px;margin-bottom: 65px;")
+      .content.container(ng-view animate-panel='', effect='zoomIn')
+    div(ng-include="'/WH/views/partials/footer.html'")
+
+    script(src='/js/lib/jquery-2.1.3.min.js')
+    script(src='/scripts/angular.min.js')
+    script(src='/scripts/angular-ui.min.js')
+    script(src='/scripts/angular-route.min.js')
+    script(src='/scripts/angular-sanitize.min.js')
+    script(src='/scripts/angular-file-upload.min.js')
+
+    script(src='/scripts/ui.bootstrap.js')
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
+    script(src='/WH/scripts/app.js')
+
+    script(src='/WH/scripts/configs/routes.js')
+    script(src='/WH/scripts/factories/api.js')
+    script(src='/WH/scripts/services/fetchService.js')
+    script(src='/WH/scripts/services/sessionService.js')
+
+    script(src='/WH/scripts/controllers/body.js')
+    script(src='/WH/scripts/controllers/account.js')
+    script(src='/WH/scripts/controllers/mainCtrl.js')
+    script(src='/WH/scripts/controllers/cpcontroller.js')
+
