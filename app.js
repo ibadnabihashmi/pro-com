@@ -104,13 +104,17 @@ app.get('/user',function(req,res){
 });
 
 app.get('/login', userController.getLogin);
+app.get('/loginManager', userController.getLoginManager);
 app.post('/login', userController.postLogin);
+app.post('/loginManager', userController.postLoginManager);
 app.get('/logout', userController.logout);
 app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
+app.get('/signupManager', userController.getSignupManager);
 app.get('/signup', userController.getSignup);
+app.post('/signupMAnager', userController.postSignupManager);
 app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);

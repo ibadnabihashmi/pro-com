@@ -12,6 +12,7 @@ var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
 var secrets = require('./secrets');
 var User = require('../models/User');
+var Manager = require('../models/Manager');
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -83,7 +84,19 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
     });
   });
 }));
-
+passport.use('local-manager',new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
+    email = email.toLowerCase();
+    Manager.findOne({ email: email }, function(err, user) {
+        if (!user) return done(null, false, { message: 'Email ' + email + ' not found'});
+        user.comparePassword(password, function(err, isMatch) {
+            if (isMatch) {
+                return done(null, user);
+            } else {
+                return done(null, false, { message: 'Invalid email or password.' });
+            }
+        });
+    });
+}));
 /**
  * OAuth Strategy Overview
  *
