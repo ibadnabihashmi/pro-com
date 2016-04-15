@@ -4,7 +4,6 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
-var Manager = require('../models/Manager');
 var secrets = require('../config/secrets');
 
 /**
@@ -14,12 +13,6 @@ var secrets = require('../config/secrets');
 exports.getLogin = function(req, res) {
     if (req.user) return res.redirect('/account');
     res.render('account/login', {
-        title: 'Login'
-    });
-};
-exports.getLoginManager = function(req, res) {
-    if (req.user) return res.redirect('/addItem');
-    res.render('account/loginManager', {
         title: 'Login'
     });
 };
@@ -51,30 +44,6 @@ exports.postLogin = function(req, res, next) {
         });
     })(req, res, next);
 };
-exports.postLoginManager = function(req, res, next) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('password', 'Password cannot be blank').notEmpty();
-
-    var errors = req.validationErrors();
-
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/login');
-    }
-
-    passport.authenticate('local-manager', function(err, user, info) {
-        if (err) return next(err);
-        if (!user) {
-            req.flash('errors', { msg: info.message });
-            return res.redirect('/loginManager');
-        }
-        req.logIn(user, function(err) {
-            if (err) return next(err);
-            req.flash('success', { msg: 'Success! You are logged in.' });
-            res.redirect('/manager/addIem');
-        });
-    })(req, res, next);
-};
 /**
  * GET /logout
  * Log out.
@@ -94,12 +63,7 @@ exports.getSignup = function(req, res) {
         title: 'Signup'
     });
 };
-exports.getSignupManager = function(req, res) {
-    if (req.user) return res.redirect('/');
-    res.render('account/signupManager', {
-        title: 'Signup'
-    });
-};
+
 /**
  * POST /signup
  * Create a new local account.
@@ -137,38 +101,6 @@ exports.postSignup = function(req, res ,next) {
     });
 };
 
-exports.postSignupManager = function(req, res ,next) {
-
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('password', 'Password must be at least 4 characters long').len(4);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-
-    var errors = req.validationErrors();
-
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/signupManager');
-    }
-    var manager = new Manager({
-        email: req.body.email,
-        password: req.body.password
-    });
-    manager.profile.name = req.body.fname+" "+req.body.lname;
-
-    Manager.findOne({ email: req.body.email }, function(err, existingUser) {
-        if (existingUser) {
-            req.flash('errors', { msg: 'Account with that email address already exists.' });
-            return res.redirect('/signupManager');
-        }
-        manager.save(function(err) {
-            if (err) return next(err);
-            req.logIn(manager, function(err) {
-                if (err) return next(err);
-                res.redirect('/manager/additem');
-            });
-        });
-    });
-};
 /**
  * GET /account
  * Profile page.
